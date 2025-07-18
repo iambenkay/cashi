@@ -13,7 +13,6 @@ val restateVersion = "2.2.0"
 val log4jVersion = "2.24.3"
 val cucumberVersion = "7.4.1"
 val kotlinCoroutinesTestVersion = "1.7.3"
-val picoContainerVersion = "1.2.5"
 
 dependencies {
   // Annotation processor
