@@ -1,6 +1,7 @@
 package cashi.fee.steps
 
 import cashi.fee.*
+import dev.restate.client.IngressException
 import io.cucumber.java.After
 import io.cucumber.java.Before
 import io.cucumber.java.ParameterType
@@ -9,6 +10,7 @@ import io.cucumber.java.en.When
 import io.cucumber.java.en.Then
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
+import org.junit.jupiter.api.assertThrows
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
@@ -64,6 +66,25 @@ class FeeDefinitions {
 
         assertEquals(rate, response.rate)
         assertEquals(fee, response.fee)
+    }
+
+    @Then("a {int} error should be thrown")
+    fun checkThatErrorIsThrown(code: Int) = runTest {
+        val client = TransactionServiceClient.fromClient(restate.ingress)
+
+        val request = TransactionRequest(
+            transactionId = "txn_001",
+            amount = amount,
+            asset = "USD",
+            assetType = "FIAT",
+            type = transactionType,
+            state = "SETTLED - PENDING FEE",
+            createdAt = LocalDateTime.now()
+        )
+        val exception = assertThrows<IngressException> {
+            client.fee(request)
+        }
+        assertEquals(code, exception.statusCode)
     }
 }
 

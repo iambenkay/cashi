@@ -14,3 +14,8 @@ Feature: Calculate Transaction Fee
     Given I submit a transaction with id "txn_003" and amount 10000
     When the transaction type is "Domestic Transfer"
     Then the rate should be 0.025 and the fee should be 250
+
+  Scenario: Handle invalid transaction amount
+    Given I submit a transaction with id "txn_004" and amount -1000
+    When the transaction type is "Domestic Transfer"
+    Then a 400 error should be thrown

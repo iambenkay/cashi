@@ -2,6 +2,7 @@ package cashi.fee
 
 import dev.restate.sdk.annotation.Handler
 import dev.restate.sdk.annotation.VirtualObject
+import dev.restate.sdk.common.TerminalException
 import dev.restate.sdk.kotlin.ObjectContext
 import dev.restate.sdk.kotlin.stateKey
 
@@ -14,6 +15,10 @@ class TransactionFee {
 
     @Handler
     suspend fun calculateFee(ctx: ObjectContext, transaction: TransactionRequest): Fee {
+        if (transaction.amount <= 0) {
+            throw TerminalException(400, "Invalid transaction amount supplied")
+        }
+
         return ctx.getFee() ?: run {
             val fee = Fee(transaction.type.rate * transaction.amount, transaction.type.rate)
             ctx.setFee(fee)
