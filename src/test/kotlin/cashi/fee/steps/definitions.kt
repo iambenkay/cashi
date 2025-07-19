@@ -53,7 +53,7 @@ class FeeDefinitions {
         val client = TransactionServiceClient.fromClient(restate.ingress)
 
         val request = TransactionRequest(
-            transactionId = "txn_001",
+            transactionId = transactionId,
             amount = amount,
             asset = "USD",
             assetType = "FIAT",
@@ -73,7 +73,7 @@ class FeeDefinitions {
         val client = TransactionServiceClient.fromClient(restate.ingress)
 
         val request = TransactionRequest(
-            transactionId = "txn_001",
+            transactionId = transactionId,
             amount = amount,
             asset = "USD",
             assetType = "FIAT",
